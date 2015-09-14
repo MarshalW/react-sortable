@@ -5,8 +5,7 @@ import HTML5Backend from 'react-dnd/modules/backends/HTML5';
 import Item from './Item';
 
 const style = {
-  width: '400px',
-  backgroundColor: 'yellow'
+  width: '400px'
 };
 
 export default class App extends Component {
@@ -37,6 +36,25 @@ export default class App extends Component {
 	      }]
 	    };
 	}
+
+	moveCard(id, afterId) {
+		const { cards } = this.state;
+
+		const card = cards.filter(c => c.id === id)[0];
+		const afterCard = cards.filter(c => c.id === afterId)[0];
+		const cardIndex = cards.indexOf(card);
+		const afterIndex = cards.indexOf(afterCard);
+
+		this.setState(update(this.state, {
+		  cards: {
+		    $splice: [
+		      [cardIndex, 1],
+		      [afterIndex, 0, card]
+		    ]
+		  }
+		}));
+	}
+
 	render(){
 		const {cards}=this.state;
 		return (
