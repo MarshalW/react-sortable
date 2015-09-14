@@ -1,5 +1,6 @@
 'use strict';
 import React, { Component } from 'react';
+import update from 'react/lib/update';
 import { DragDropContext } from 'react-dnd';
 import HTML5Backend from 'react-dnd/modules/backends/HTML5';
 import Item from './Item';
@@ -11,57 +12,55 @@ const style = {
 export default class App extends Component {
 	constructor(props){
 		super(props);
+		this.moveItem = this.moveItem.bind(this);
 		this.state = {
-	      cards: [{
+	      items: [{
 	        id: 1,
-	        text: 'Write a cool JS library'
+	        text: '建立基本知识'
 	      }, {
 	        id: 2,
-	        text: 'Make it generic enough'
+	        text: '迈向成功的决心：情绪的纪律'
 	      }, {
 	        id: 3,
-	        text: 'Write README'
+	        text: '基本面分析'
 	      }, {
 	        id: 4,
-	        text: 'Create some examples'
+	        text: '技术分析'
 	      }, {
 	        id: 5,
-	        text: 'Spam in Twitter and IRC to promote it'
+	        text: '期权交易'
 	      }, {
 	        id: 6,
-	        text: '???'
-	      }, {
-	        id: 7,
-	        text: 'PROFIT'
+	        text: '交易者的心理架构'
 	      }]
 	    };
 	}
 
-	moveCard(id, afterId) {
-		const { cards } = this.state;
+	moveItem(id, afterId) {
+		const { items } = this.state;
 
-		const card = cards.filter(c => c.id === id)[0];
-		const afterCard = cards.filter(c => c.id === afterId)[0];
-		const cardIndex = cards.indexOf(card);
-		const afterIndex = cards.indexOf(afterCard);
+		const item = items.filter(i => i.id === id)[0];
+		const afterItem = items.filter(i => i.id === afterId)[0];
+		const itemIndex = items.indexOf(item);
+		const afterIndex = items.indexOf(afterItem);
 
 		this.setState(update(this.state, {
-		  cards: {
+		  items: {
 		    $splice: [
-		      [cardIndex, 1],
-		      [afterIndex, 0, card]
+		      [itemIndex, 1],
+		      [afterIndex, 0, item]
 		    ]
 		  }
 		}));
 	}
 
 	render(){
-		const {cards}=this.state;
+		const {items}=this.state;
 		return (
 			<div style={style}>
-				{cards.map(card=>{
+				{items.map(item=>{
 					return (
-						<Item key={card.id} id={card.id} text={card.text}/>
+						<Item key={item.id} id={item.id} text={item.text} moveItem={this.moveItem} />
 					);
 				})}
 			</div>

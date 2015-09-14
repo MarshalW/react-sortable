@@ -11,36 +11,43 @@ const style = {
 
 class Item {
 	render(){
-		const { text, connectDragSource } = this.props;
-		return connectDragSource(
-			<div style={style}>{text}</div>
-		);
+		const { text, connectDragSource, connectDropTarget,isDragging} = this.props;
+		const opacity = isDragging ? 0 : 1;
+		return connectDragSource(connectDropTarget(
+			<div style={{ ...style, opacity }}>{text}</div>
+		));
 	}
 }
 
-const cardSource = {
+const type='item';
+
+const itemSource = {
   beginDrag(props) {
     return { id: props.id };
   }
 };
 
-const type='item';
-
-function collect(connect, monitor) {
+function collectSource(connect, monitor) {
 	return {
 		connectDragSource: connect.dragSource(),
 		isDragging: monitor.isDragging()
 	};
 }
 
-const cardTarget = {
+const itemTarget = {
   hover(props, monitor) {
     const draggedId = monitor.getItem().id;
 
     if (draggedId !== props.id) {
-      props.moveCard(draggedId, props.id);
+      props.moveItem(draggedId, props.id);
     }
   }
 };
 
-module.exports = DragSource(type, cardSource, collect)(Item);
+function collectTaget(connect, monitor) {
+	return {
+		connectDropTarget: connect.dropTarget()
+	};
+}
+
+module.exports = DragSource(type, itemSource, collectSource)(DropTarget(type,itemTarget,collectTaget)(Item));
