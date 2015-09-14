@@ -1,3 +1,5 @@
 'use strict';
+import React from 'react';
+import App from './App';
 
-alert('>>react sortable!');
+React.render(<App />, document.getElementById('app'));
