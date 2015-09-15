@@ -1,20 +1,22 @@
 import React, { PropTypes } from 'react';
 import { DragSource, DropTarget } from 'react-dnd';
 
-const style = {
-  border: '1px dashed gray',
-  padding: '0.5rem 1rem',
-  marginBottom: '.5rem',
-  backgroundColor: 'white',
-  cursor: 'move'
-};
-
 class Item {
 	render(){
+		let style = {
+		  border: '1px dashed gray',
+		  padding: '0.5rem 1rem',
+		  marginBottom: '.5rem',
+		  backgroundColor: 'white',
+		  cursor: 'move'
+		};
+		if(this.props.selected && this.props.selected==this.props.id){
+			style.backgroundColor='AliceBlue';
+		}
 		const { text, connectDragSource, connectDropTarget,isDragging} = this.props;
 		const opacity = isDragging ? 0 : 1;
 		return connectDragSource(connectDropTarget(
-			<div style={{ ...style, opacity }}>{text}</div>
+			<div style={{ ...style, opacity }}  onClick={this.props.handleClick.bind(this.props.target,this.props.id)}>{text}</div>
 		));
 	}
 }

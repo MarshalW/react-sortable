@@ -13,6 +13,7 @@ export default class App extends Component {
 	constructor(props){
 		super(props);
 		this.moveItem = this.moveItem.bind(this);
+		this.handleClick=this.handleClick.bind(this);
 		this.state = {
 	      items: [{
 	        id: 1,
@@ -32,8 +33,15 @@ export default class App extends Component {
 	      }, {
 	        id: 6,
 	        text: '交易者的心理架构'
-	      }]
+	      }],
+	      selected:undefined
 	    };
+	}
+
+	handleClick(id){
+		this.setState({
+			selected:id
+		});
 	}
 
 	moveItem(id, afterId) {
@@ -60,7 +68,7 @@ export default class App extends Component {
 			<div style={style}>
 				{items.map(item=>{
 					return (
-						<Item key={item.id} id={item.id} text={item.text} moveItem={this.moveItem} />
+						<Item key={item.id} id={item.id} text={item.text} moveItem={this.moveItem} handleClick={this.handleClick} selected={this.state.selected} target={this}/>
 					);
 				})}
 			</div>
